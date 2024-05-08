@@ -1,4 +1,4 @@
-package exercise;
+package exercise.exception;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,10 +24,13 @@ class Game{
     }
 
     private void setBaseNumbers(){
-        // TODO 랜덤으로 3개 생성 -> 추후 -> 일단 고정
-        baseNumbers.add(6);
-        baseNumbers.add(0);
-        baseNumbers.add(7);
+        Random random = new Random();
+        while(baseNumbers.size() != 3){
+            int number = random.nextInt(10);
+            if(!baseNumbers.contains(number)){
+                baseNumbers.add(number);
+            }
+        }
     }
 
     public void run() throws IOException {
@@ -46,6 +49,7 @@ class Game{
             }
         }
         System.out.println("횟수가 초과되었습니다.");
+        System.out.println("기본 숫자들 : "+baseNumbers);
     }
 
     private String result(List<Integer> inputs){

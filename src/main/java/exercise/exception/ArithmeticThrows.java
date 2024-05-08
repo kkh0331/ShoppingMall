@@ -1,4 +1,4 @@
-package exercise;
+package exercise.exception;
 
 public class ArithmeticThrows {
     public static void main(String[] args) {
