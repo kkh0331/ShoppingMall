@@ -11,23 +11,23 @@ import java.util.Map;
 @Slf4j
 public class ProductRepository {
 
-    private Map<Integer, Product> product_table = new HashMap<>();
+    private Map<Integer, Product> productTable = new HashMap<>();
     private int id = 0;
 
     public Product save(Product product){
         product.setId(id++);
-        product_table.put(product.getId(), product);
-        return product_table.get(id-1);
+        productTable.put(product.getId(), product);
+        return productTable.get(id-1);
     }
 
     public Product findProduct(int id){
-        return product_table.get(id);
+        return productTable.get(id);
     }
 
     public List<Product> findProducts(int limit, int currentPage) {
         // Map -> Stream -> List
         // TODO 추후 DB 연결 후에
-        return product_table.values()
+        return productTable.values()
                 .stream()
                 .skip((long) (currentPage - 1) *limit)
                 .limit(limit)
@@ -35,7 +35,7 @@ public class ProductRepository {
     }
 
     public List<Product> findProducts(int limit, int currentPage, int categoryId) {
-        return product_table.values()
+        return productTable.values()
                 .stream()
                 .filter(product -> product.getCategoryId() == categoryId)
                 .skip((long) (currentPage - 1) *limit)
@@ -44,12 +44,12 @@ public class ProductRepository {
     }
 
     public void deleteProduct(int id) {
-        product_table.remove(id);
+        productTable.remove(id);
     }
 
     public void deleteProducts(List<Integer> productIds) {
         for(int productId : productIds){
-            product_table.remove(productId);
+            productTable.remove(productId);
         }
     }
 }
