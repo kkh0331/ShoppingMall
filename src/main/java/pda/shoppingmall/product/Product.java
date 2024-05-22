@@ -1,22 +1,30 @@
 package pda.shoppingmall.product;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
-@Setter
+@ToString
+@Entity
 public class Product {
-    private int id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String name;
     private int price;
     private String description;
-    private int categoryId;
+    private Integer categoryId;
 
-    // setter는 가능한 도메인 객체에는 만들면 안된다.
-    // TODO setter는 DTO 등장하고. 지우러 오자!!
-
-    public String toString(){
-        return String.format("%s\n%d원\n%s\n",  name, price, description);
+    public Product(String name, int price, String description, Integer categoryId) {
+        this.name = name;
+        this.price = price;
+        this.description = description;
+        this.categoryId = categoryId;
     }
-
 }

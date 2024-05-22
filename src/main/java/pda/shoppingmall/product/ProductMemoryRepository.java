@@ -9,13 +9,13 @@ import java.util.Map;
 
 @Repository
 @Slf4j
-public class ProductRepository {
+public class ProductMemoryRepository {
 
-    private Map<Integer, Product> productTable = new HashMap<>();
+    private Map<Long, Product> productTable = new HashMap<>();
     private int id = 0;
 
     public Product save(Product product){
-        product.setId(id++);
+//        product.setId(id++);
         productTable.put(product.getId(), product);
         return productTable.get(id-1);
     }

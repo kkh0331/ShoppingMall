@@ -3,7 +3,7 @@ package pda.shoppingmall.order;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import pda.shoppingmall.product.ProductRepository;
+import pda.shoppingmall.product.ProductMemoryRepository;
 
 @Service
 @AllArgsConstructor
@@ -11,7 +11,7 @@ import pda.shoppingmall.product.ProductRepository;
 public class OrderService {
 
     private OrderRepository orderRepository;
-    private ProductRepository productRepository;
+    private ProductMemoryRepository productRepository;
 
     public void orderProduct(Order order){
         log.info("order : {}", order);
