@@ -10,14 +10,13 @@ import pda.shoppingmall.exception.DuplicateException;
 import pda.shoppingmall.member.dto.LoginReqDTO;
 import pda.shoppingmall.utils.ApiUtils;
 
-import java.util.Map;
-
 @RestController
 @AllArgsConstructor
 @Slf4j
 public class MemberController {
 
-    private MemberService memberService;
+//    private MemberService memberService;
+    private MemberJPAService memberJPAService;
 
 //    @GetMapping("/datasource")
 //    public void makeConnection(){
@@ -73,29 +72,27 @@ public class MemberController {
 //            return ApiUtils.error(errorMap, HttpStatus.BAD_REQUEST);
 //        }
 
-//        if(isDuplicateId(memberDTO)){
-//            throw new DuplicateException("아이디 중복");
-//        }
+        if(isDuplicateId(memberDTO)){
+            throw new DuplicateException("아이디 중복");
+        }
 
         Member requestMember = memberDTO.convertToEntity();
 
-        String userId = memberService.join(requestMember);
+        String userId = memberJPAService.join(requestMember);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiUtils.success(userId));
     }
 
     private boolean isDuplicateId(MemberDTO memberDTO) {
-        return memberService.checkDuplicateId(memberDTO.getUserId());
+        return memberJPAService.checkDuplicateId(memberDTO.getUserId());
     }
 
     @PostMapping("/login")
     public ResponseEntity login(@Valid @RequestBody LoginReqDTO loginRequest){
         System.out.println(loginRequest);
-        Member member = memberService.login(loginRequest);
+        Member member = memberJPAService.login(loginRequest);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiUtils.success(member));
     }
-
-
 
 }
