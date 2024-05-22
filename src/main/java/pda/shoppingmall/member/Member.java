@@ -1,15 +1,19 @@
 package pda.shoppingmall.member;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.ToString;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import lombok.*;
 
 @Getter
 @ToString
-@AllArgsConstructor
+@Entity
+@NoArgsConstructor
+@Setter
 public class Member {
 
+    @Id
     private int id;
+
     private String userId;
     private String pw;
     private String name;

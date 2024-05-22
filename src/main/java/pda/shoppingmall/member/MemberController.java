@@ -5,15 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import pda.shoppingmall.exception.DuplicateException;
+import pda.shoppingmall.member.dto.LoginReqDTO;
 import pda.shoppingmall.utils.ApiUtils;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -22,6 +18,11 @@ import java.util.Map;
 public class MemberController {
 
     private MemberService memberService;
+
+//    @GetMapping("/datasource")
+//    public void makeConnection(){
+//        memberService.makeConnection();
+//    }
 
 //    @PostMapping("/join/res/en") //Before
 //    public ResponseEntity<String> joinByResponseEntity(@RequestBody MemberDTO memberDTO){
@@ -72,9 +73,9 @@ public class MemberController {
 //            return ApiUtils.error(errorMap, HttpStatus.BAD_REQUEST);
 //        }
 
-        if(isDuplicateId(memberDTO)){
-            throw new DuplicateException("아이디 중복");
-        }
+//        if(isDuplicateId(memberDTO)){
+//            throw new DuplicateException("아이디 중복");
+//        }
 
         Member requestMember = memberDTO.convertToEntity();
 
@@ -88,12 +89,11 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody Map<String, String> loginRequest){
-        String userId = loginRequest.get("userId");
-        String pw = loginRequest.get("pw");
-        //TODO 입력받은 값 검증
-        String jwt = memberService.login(userId, pw);
-        return new ResponseEntity<>(jwt, HttpStatus.OK);
+    public ResponseEntity login(@Valid @RequestBody LoginReqDTO loginRequest){
+        System.out.println(loginRequest);
+        Member member = memberService.login(loginRequest);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiUtils.success(member));
     }
 
 
