@@ -1,23 +1,19 @@
 package pda.shoppingmall.product;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pda.shoppingmall.exception.NoDeleteException;
+import pda.shoppingmall.exception.DeleteException;
+import pda.shoppingmall.product.dto.DeleteProductsReqDTO;
 import pda.shoppingmall.product.dto.FindProductsReqDTO;
 import pda.shoppingmall.product.dto.FindProductsResDTO;
 import pda.shoppingmall.product.dto.RegisterProductReqDTO;
 import pda.shoppingmall.utils.ApiUtils;
-import pda.shoppingmall.utils.Validator;
 
 import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -80,27 +76,19 @@ public class ProductController {
         //삭제 성공, 실패 판단하려면 필요한 데이터?
         productService.deleteProduct(id);
 
-        // 상품 조회해서 null 값 떨어지는지 보자!!x
-        Optional<Product> deletedProduct = productService.findProduct(id);
-        if(deletedProduct.isEmpty())
-            return ResponseEntity.status(HttpStatus.OK)
+        return ResponseEntity.status(HttpStatus.OK)
                     .body(ApiUtils.success(null));
-
-        throw new NoDeleteException("서버에서 Product 삭제 과정에서 오류가 발생했습니다.");
     }
 
-//    @PostMapping("/delete")
-//    public ResponseEntity deleteProducts(@RequestBody Map<String, List<Integer>> deleteRequest){
-//        List<Integer> productIds = deleteRequest.get("productIds");
-//        log.info("productIds : {}", productIds);
-//
-//        if(productIds.isEmpty()){
-//            log.info("productIds가 없어...");
-//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//        }
-//
-//        productService.deleteProducts(productIds);
-//        return new ResponseEntity<>(HttpStatus.OK);
-//    }
+    @PostMapping("/delete")
+    public ResponseEntity deleteProducts(@Valid @RequestBody DeleteProductsReqDTO deleteProductsReqDTO){
+
+        log.info("deleteProductsReqDTO : {}", deleteProductsReqDTO);
+
+        productService.deleteProducts(deleteProductsReqDTO);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                    .body(ApiUtils.success(null));
+    }
 
 }

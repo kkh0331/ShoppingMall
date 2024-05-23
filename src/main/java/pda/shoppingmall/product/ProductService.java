@@ -7,11 +7,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import pda.shoppingmall.exception.DeleteException;
+import pda.shoppingmall.product.dto.DeleteProductsReqDTO;
 import pda.shoppingmall.product.dto.FindProductsReqDTO;
 import pda.shoppingmall.product.dto.FindProductsResDTO;
 import pda.shoppingmall.product.dto.RegisterProductReqDTO;
 import pda.shoppingmall.utils.PageNation;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -40,7 +43,7 @@ public class ProductService {
         Page<Product> page = findProductsByCategoryId(findProductsReqDTO);
 
         if(page.isEmpty()){
-            throw new NoSuchElementException("해당 조건에 맞는 products는 가져올 수 없습니다.");
+            throw new NoSuchElementException("해당 조건에 맞는 products가 서버에 없습니다.");
         }
 
         FindProductsResDTO findProductsResDTO = new FindProductsResDTO(
@@ -65,12 +68,23 @@ public class ProductService {
         return productJPARepository.findAllByCategoryId(categoryId, pageable);
     }
 
-
+    @Transactional
     public void deleteProduct(Long id) {
         productJPARepository.deleteById(id);
+
+        Optional<Product> deletedProduct = productJPARepository.findById(id);
+        if(!deletedProduct.isEmpty())
+            throw new DeleteException("서버에서 Product 삭제 과정에서 오류가 발생했습니다.");
     }
-//
-//    public void deleteProducts(List<Integer> productIds) {
-//        productJPARepository.deleteProducts(productIds);
-//    }
+
+    @Transactional
+    public void deleteProducts(DeleteProductsReqDTO deleteProductsReqDTO) {
+        List<Long> productIds = deleteProductsReqDTO.getProductIds();
+        productJPARepository.deleteAllByIdInBatch(productIds);
+        List<Product> deletedProducts = productJPARepository.findAllById(productIds);
+        if(!deletedProducts.isEmpty()){
+            throw new DeleteException("서버 오류로 인해 삭제가 정상적으로 진행되지 않았습니다.");
+        }
+
+    }
 }

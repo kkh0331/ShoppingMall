@@ -55,7 +55,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ApiUtils.ApiResult handleNoDelete(NoDeleteException error){
+    public ApiUtils.ApiResult handleNoDelete(DeleteException error){
         return ApiUtils.error(error.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
