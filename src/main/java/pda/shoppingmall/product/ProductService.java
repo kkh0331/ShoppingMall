@@ -31,12 +31,8 @@ public class ProductService {
         return savedProduct;
     }
 
-    public Product findProduct(Long id){
-        Optional<Product> resultProduct = productJPARepository.findById(id);
-        if(resultProduct.isEmpty()){
-            throw new NoSuchElementException("해당 id에 해당하는 Product을 찾을 수 없습니다.");
-        }
-        return resultProduct.get();
+    public Optional<Product> findProduct(Long id){
+        return productJPARepository.findById(id);
     }
 
     public FindProductsResDTO findProducts(FindProductsReqDTO findProductsReqDTO) {
@@ -55,7 +51,6 @@ public class ProductService {
         log.info("findProductsResDTO : {}", findProductsResDTO);
 
         return findProductsResDTO;
-
     }
 
 
@@ -70,19 +65,10 @@ public class ProductService {
         return productJPARepository.findAllByCategoryId(categoryId, pageable);
     }
 
-//
-//    public List<Product> findProducts(int limit, int currentPage) {
-//        return productJPARepository.findProducts(limit, currentPage);
-//
-//    }
-//
-//    public List<Product> findProducts(int limit, int currentPage, int categoryId) {
-//        return productJPARepository.findProducts(limit, currentPage, categoryId);
-//    }
-//
-//    public void deleteProduct(int id) {
-//        productJPARepository.deleteProduct(id);
-//    }
+
+    public void deleteProduct(Long id) {
+        productJPARepository.deleteById(id);
+    }
 //
 //    public void deleteProducts(List<Integer> productIds) {
 //        productJPARepository.deleteProducts(productIds);

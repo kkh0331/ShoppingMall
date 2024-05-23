@@ -1,6 +1,5 @@
 package pda.shoppingmall.exception;
 
-import jakarta.persistence.NoResultException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpStatus;
@@ -8,7 +7,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import pda.shoppingmall.utils.ApiUtils;
 
 import java.util.HashMap;
@@ -53,6 +51,12 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ApiUtils.ApiResult handleNoSuchElement(NoSuchElementException error){
         return ApiUtils.error(error.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ApiUtils.ApiResult handleNoDelete(NoDeleteException error){
+        return ApiUtils.error(error.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }
