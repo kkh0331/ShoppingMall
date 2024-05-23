@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pda.shoppingmall.product.dto.FindProductsReqDTO;
+import pda.shoppingmall.product.dto.FindProductsResDTO;
 import pda.shoppingmall.product.dto.RegisterProductReqDTO;
 import pda.shoppingmall.utils.ApiUtils;
 import pda.shoppingmall.utils.Validator;
@@ -47,31 +48,20 @@ public class ProductController {
         return new ResponseEntity<>(ApiUtils.success(resultProduct), HttpStatus.OK);
     }
 
-//    @GetMapping("")
-//    public ResponseEntity<List<Product>> finProducts(
-//            @RequestParam("limit") int limit,
-//            @RequestParam("currentPage") int currentPage,
-//            @RequestParam(value = "categoryId", required = false) Integer categoryId
-//    ){
-//        // 정보 추적은 trace, 지금은 info
-//        log.info("limit = {}", limit);
-//        log.info("currentPage = {}", currentPage);
-//        log.info("categoryId = {}", categoryId);
-//
-//        List<Product> products;
-//
-//        //TODO null 체크는 어디서 해야할까?
-//        if(categoryId == null){
-//            products = productService.findProducts(limit, currentPage);
-//        } else {
-//            products = productService.findProducts(limit, currentPage, categoryId);
-//        }
-//
-//        if(products == null || products.isEmpty())
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//
-//        return new ResponseEntity<>(products, HttpStatus.OK);
-//    }
+    @GetMapping("")
+    public ResponseEntity finProducts(
+            @RequestParam("limit") int limit,
+            @RequestParam("currentPage") int currentPage,
+            @RequestParam(value = "categoryId", required = false) Integer categoryId,
+            FindProductsReqDTO findProductsReqDTO
+    ){
+        // 정보 추적은 trace, 지금은 info
+        log.info("findProductsReqDTO = {}", findProductsReqDTO);
+
+        FindProductsResDTO findProductsResDTO = productService.findProducts(findProductsReqDTO);
+
+        return new ResponseEntity<>(ApiUtils.success(findProductsResDTO), HttpStatus.OK);
+    }
 //
 //    @DeleteMapping("/{id}")
 //    public ResponseEntity deleteProduct(@PathVariable(value = "id") int id){
