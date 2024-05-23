@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pda.shoppingmall.product.dto.FindProductsReqDTO;
 import pda.shoppingmall.product.dto.RegisterProductReqDTO;
 import pda.shoppingmall.utils.ApiUtils;
 import pda.shoppingmall.utils.Validator;
@@ -40,15 +41,12 @@ public class ProductController {
 
     //TODO id가 양수가 아니면 에러처리가 안됨...
     @GetMapping("/{id}")
-    public ResponseEntity findProduct(@Valid @PathVariable(value = "id")
-                                          @Positive(message = "id는 양수만 가능합니다.")
-                                          Long id
-    ){
+    public ResponseEntity findProduct(@PathVariable(value = "id") Long id){
         log.info("id : {}",id);
         Product resultProduct = productService.findProduct(id);
         return new ResponseEntity<>(ApiUtils.success(resultProduct), HttpStatus.OK);
     }
-//
+
 //    @GetMapping("")
 //    public ResponseEntity<List<Product>> finProducts(
 //            @RequestParam("limit") int limit,
