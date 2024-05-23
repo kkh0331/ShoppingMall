@@ -3,6 +3,7 @@ package pda.shoppingmall.product;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -37,25 +38,16 @@ public class ProductController {
                 .body(ApiUtils.success(savedProduct));
     }
 
-//    @GetMapping("/{id}")
-//    public ResponseEntity<Product> findProduct(@PathVariable(value = "id") @Valid
-//                                                   @Pattern()
-//                                                   @Min(0)
-//                                                   Long id
-//    ){
-//
-//        if(!Validator.isNumber(id)){ // 400 요청이 잘못되었을 때,
-//            log.info("id {}", id);
-//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//        }
-//
-//        Optional<Product> resultProduct = productService.findProduct(id);
-//
-//        if(resultProduct == null)
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // 404 찾지 못했을 때,
-//
-//        return new ResponseEntity<>(resultProduct, HttpStatus.OK);
-//    }
+    //TODO id가 양수가 아니면 에러처리가 안됨...
+    @GetMapping("/{id}")
+    public ResponseEntity findProduct(@Valid @PathVariable(value = "id")
+                                          @Positive(message = "id는 양수만 가능합니다.")
+                                          Long id
+    ){
+        log.info("id : {}",id);
+        Product resultProduct = productService.findProduct(id);
+        return new ResponseEntity<>(ApiUtils.success(resultProduct), HttpStatus.OK);
+    }
 //
 //    @GetMapping("")
 //    public ResponseEntity<List<Product>> finProducts(

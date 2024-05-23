@@ -6,6 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import pda.shoppingmall.product.dto.RegisterProductReqDTO;
 
+import java.util.NoSuchElementException;
+import java.util.Optional;
+
 @Service
 @AllArgsConstructor
 @Slf4j
@@ -22,9 +25,13 @@ public class ProductService {
         return savedProduct;
     }
 
-//    public Optional<Product> findProduct(Long id){
-//        return productJPARepository.findById(id);
-//    }
+    public Product findProduct(Long id){
+        Optional<Product> resultProduct = productJPARepository.findById(id);
+        if(resultProduct.isEmpty()){
+            throw new NoSuchElementException("해당 id에 해당하는 Product을 찾을 수 없습니다.");
+        }
+        return resultProduct.get();
+    }
 //
 //    public List<Product> findProducts(int limit, int currentPage) {
 //        return productJPARepository.findProducts(limit, currentPage);
