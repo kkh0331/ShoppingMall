@@ -38,6 +38,7 @@ public class MemberController {
 
     @PostMapping("/login")
     public ResponseEntity login(@Valid @RequestBody LoginReqDTO loginRequest){
+        log.info("LoginRequest : {}", loginRequest);
         Member member = memberJPAService.login(loginRequest);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiUtils.success(member));

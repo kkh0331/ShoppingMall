@@ -65,4 +65,10 @@ public class GlobalExceptionHandler {
         return ApiUtils.error(error.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiUtils.ApiResult handleNotMatchMember(NotMatchMemberException error){
+        return ApiUtils.error(error.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
 }
