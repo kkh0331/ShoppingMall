@@ -3,19 +3,21 @@ package pda.shoppingmall.order;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import pda.shoppingmall.product.ProductMemoryRepository;
+import pda.shoppingmall.order.dto.OrderProductReqDTO;
+import pda.shoppingmall.order.dto.OrderProductResDTO;
+import pda.shoppingmall.product.Product;
 
 @Service
 @AllArgsConstructor
 @Slf4j
 public class OrderService {
 
-    private OrderRepository orderRepository;
-    private ProductMemoryRepository productRepository;
+    private OrderJPARepository orderJPARepository;
 
-    public void orderProduct(Order order){
-        log.info("order : {}", order);
-        orderRepository.saveOrder(order);
+    public OrderProductResDTO orderProduct(OrderProductReqDTO orderProductReqDTO, Product orderedProduct){
+        Order reqOrder = orderProductReqDTO.convertToEntity();
+        Order savedOrder = orderJPARepository.save(reqOrder);
+        return savedOrder.convertToOrderProductResDTO(orderedProduct);
     }
 
 }
