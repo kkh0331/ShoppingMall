@@ -1,10 +1,10 @@
 package pda.shoppingmall.exception;
 
-public class CreateException extends RuntimeException{
+public class NotDeleteException extends RuntimeException{
 
     private String message;
 
-    public CreateException(String message){
+    public NotDeleteException(String message){
         this.message = message;
     }
 

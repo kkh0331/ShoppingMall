@@ -6,14 +6,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pda.shoppingmall.exception.DeleteException;
 import pda.shoppingmall.product.dto.DeleteProductsReqDTO;
 import pda.shoppingmall.product.dto.FindProductsReqDTO;
 import pda.shoppingmall.product.dto.FindProductsResDTO;
 import pda.shoppingmall.product.dto.RegisterProductReqDTO;
 import pda.shoppingmall.utils.ApiUtils;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 

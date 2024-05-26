@@ -7,7 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import pda.shoppingmall.exception.DeleteException;
+import pda.shoppingmall.exception.NotDeleteException;
 import pda.shoppingmall.product.dto.DeleteProductsReqDTO;
 import pda.shoppingmall.product.dto.FindProductsReqDTO;
 import pda.shoppingmall.product.dto.FindProductsResDTO;
@@ -74,7 +74,7 @@ public class ProductService {
 
         Optional<Product> deletedProduct = productJPARepository.findById(id);
         if(!deletedProduct.isEmpty())
-            throw new DeleteException("서버에서 Product 삭제 과정에서 오류가 발생했습니다.");
+            throw new NotDeleteException("서버에서 Product 삭제 과정에서 오류가 발생했습니다.");
     }
 
     @Transactional
@@ -83,7 +83,7 @@ public class ProductService {
         productJPARepository.deleteAllByIdInBatch(productIds);
         List<Product> deletedProducts = productJPARepository.findAllById(productIds);
         if(!deletedProducts.isEmpty()){
-            throw new DeleteException("서버 오류로 인해 삭제가 정상적으로 진행되지 않았습니다.");
+            throw new NotDeleteException("서버 오류로 인해 삭제가 정상적으로 진행되지 않았습니다.");
         }
 
     }
