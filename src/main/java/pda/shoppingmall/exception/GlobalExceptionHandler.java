@@ -59,4 +59,10 @@ public class GlobalExceptionHandler {
         return ApiUtils.error(error.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ApiUtils.ApiResult handleNoCreate(CreateException error){
+        return ApiUtils.error(error.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 }

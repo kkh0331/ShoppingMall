@@ -1,13 +1,15 @@
-package pda.shoppingmall.member;
+package pda.shoppingmall.member.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
+import pda.shoppingmall.member.Member;
 
 @Getter
-@Setter
-public class MemberDTO {
+@ToString
+public class JoinReqDTO {
 
     private int id;
 
