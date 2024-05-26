@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pda.shoppingmall.exception.NotDeleteException;
+import pda.shoppingmall.order.dto.OrderProductReqDTO;
 import pda.shoppingmall.product.dto.DeleteProductsReqDTO;
 import pda.shoppingmall.product.dto.FindProductsReqDTO;
 import pda.shoppingmall.product.dto.FindProductsResDTO;
@@ -34,8 +35,12 @@ public class ProductService {
         return savedProduct;
     }
 
-    public Optional<Product> findProduct(Long id){
-        return productJPARepository.findById(id);
+    public Product findProduct(Long id){
+        Optional<Product> resultProduct = productJPARepository.findById(id);
+        if(resultProduct.isEmpty()){
+            throw new NoSuchElementException("해당 id에 해당하는 Product을 찾을 수 없습니다.");
+        }
+        return resultProduct.get();
     }
 
     public FindProductsResDTO findProducts(FindProductsReqDTO findProductsReqDTO) {
