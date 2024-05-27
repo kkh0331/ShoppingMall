@@ -3,6 +3,7 @@ package pda.shoppingmall.order;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import pda.shoppingmall.order.dto.OrderProductResDTO;
 import pda.shoppingmall.product.Product;
@@ -15,6 +16,7 @@ import pda.shoppingmall.product.Product;
 public class Order {
 
     @Id
+    @Setter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

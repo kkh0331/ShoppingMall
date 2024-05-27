@@ -12,11 +12,11 @@ import pda.shoppingmall.product.Product;
 @Slf4j
 public class OrderService {
 
-    private OrderJPARepository orderJPARepository;
+    private pda.shoppingmall.order.repository.OrderRepository OrderRepository;
 
     public OrderProductResDTO orderProduct(OrderProductReqDTO orderProductReqDTO, Product orderedProduct){
         Order reqOrder = orderProductReqDTO.convertToEntity();
-        Order savedOrder = orderJPARepository.save(reqOrder);
+        Order savedOrder = OrderRepository.save(reqOrder);
         return savedOrder.convertToOrderProductResDTO(orderedProduct);
     }
 
