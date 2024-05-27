@@ -5,7 +5,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 import pda.shoppingmall.member.Member;
-import pda.shoppingmall.member.MemberJPARepository;
+import pda.shoppingmall.member.repository.MemberJPARepository;
 
 import java.util.Optional;
 

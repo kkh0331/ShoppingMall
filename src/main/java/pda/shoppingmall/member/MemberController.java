@@ -16,7 +16,7 @@ import pda.shoppingmall.utils.ApiUtils;
 @Slf4j
 public class MemberController {
 
-    private MemberJPAService memberJPAService;
+    private MemberService memberService;
 
     @PostMapping("/join") //After
     public ResponseEntity join(@Valid @RequestBody JoinReqDTO joinReqDTO){
@@ -27,19 +27,19 @@ public class MemberController {
             throw new DuplicateException("아이디 중복");
         }
 
-        String userId = memberJPAService.join(joinReqDTO);
+        String userId = memberService.join(joinReqDTO);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiUtils.success(userId));
     }
 
     private boolean isDuplicateId(JoinReqDTO joinReqDTO) {
-        return memberJPAService.checkDuplicateId(joinReqDTO.getUserId());
+        return memberService.checkDuplicateId(joinReqDTO.getUserId());
     }
 
     @PostMapping("/login")
     public ResponseEntity login(@Valid @RequestBody LoginReqDTO loginRequest){
         log.info("LoginRequest : {}", loginRequest);
-        Member member = memberJPAService.login(loginRequest);
+        Member member = memberService.login(loginRequest);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiUtils.success(member));
     }

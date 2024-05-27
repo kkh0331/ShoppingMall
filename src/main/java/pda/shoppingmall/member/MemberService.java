@@ -4,7 +4,14 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import pda.shoppingmall.exception.NotCreateException;
+import pda.shoppingmall.exception.NotMatchMemberException;
+import pda.shoppingmall.member.dto.JoinReqDTO;
 import pda.shoppingmall.member.dto.LoginReqDTO;
+import pda.shoppingmall.member.repository.MemberRepository;
+
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -14,35 +21,34 @@ public class MemberService {
     private MemberRepository memberRepository;
 
     @Transactional
-    public String join(Member member){
-        memberRepository.save(member);
-        // TODO 검증 필요;
-        log.info("save 후");
-        Member savedMember = memberRepository.findByUserId(member.getUserId());
-        log.info("savedMember : {}", savedMember);
-        return savedMember.getUserId();
+    public String join(JoinReqDTO joinReqDTO){
+        log.info("JoinReqDTO : {}", joinReqDTO);
+        Member reqMember = joinReqDTO.convertToEntity();
+        Member joinedMember = memberRepository.save(reqMember); //등록이 되지 않으면 null이 들어옴
+        if(joinedMember == null){
+            throw new NotCreateException("회원가입 도중에 서버 에러가 발생했습니다.");
+        }
+        return joinedMember.getUserId();
     }
 
     public boolean checkDuplicateId(String userId){
-        Member existMember = memberRepository.findByUserId(userId);
-        return existMember != null;
+        Optional<Member> existMember = memberRepository.findByUserId(userId);
+        return existMember.isPresent();
     }
 
     public Member login(LoginReqDTO loginReqDTO) {
-        //TODO 예외 처리 적용
-
-        Member resMember = memberRepository.findByUserId(loginReqDTO.getUserId());
-        if(isMatchMember(resMember, loginReqDTO)){
-            return resMember;
+        Optional<Member> resMember = memberRepository.findByUserId(loginReqDTO.getUserId());
+        if(resMember.isEmpty()){
+            throw new NoSuchElementException("해당 아이디를 찾을 수 없습니다. 다시 입력해 주세요");
         }
-        return null;
+        if(isMatchMember(resMember.get(), loginReqDTO)){
+            return resMember.get();
+        }
+        throw new NotMatchMemberException("비밀번호가 일치하지 않습니다. 다시 입력해 주세요");
     }
 
     private boolean isMatchMember(Member resMember, LoginReqDTO loginReqDTO){
-        return resMember != null && loginReqDTO.getPw().equals(resMember.getPw());
+        return loginReqDTO.getPw().equals(resMember.getPw());
     }
 
-//    public void makeConnection() {
-//        memberRepository.makeConnection();
-//    }
 }
