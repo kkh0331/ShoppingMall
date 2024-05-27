@@ -1,10 +1,10 @@
 package pda.shoppingmall.exception;
 
-public class DuplicateException extends RuntimeException{
+public class DuplicateMemberIdException extends RuntimeException{
 
     private String message;
 
-    public DuplicateException(String message){
+    public DuplicateMemberIdException(String message){
         this.message = message;
     }
 

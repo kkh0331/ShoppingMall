@@ -34,13 +34,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ApiUtils.ApiResult  handleDuplicateException(DuplicateException error){
+    public ApiUtils.ApiResult  handleDuplicateMemberIdException(DuplicateMemberIdException error){
         return ApiUtils.error(error.getMessage(), HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiUtils.ApiResult handleTypeMismatch(TypeMismatchException error){
+    public ApiUtils.ApiResult handleTypeMismatchException(TypeMismatchException error){
         String requiredType = error.getRequiredType().getSimpleName();
         String errorType =  error.getValue().getClass().getSimpleName();
         String errorMessage = String.format("%s 타입이 들어와야 되는데 %s 타입이 들어왔습니다.", requiredType, errorType);
@@ -49,25 +49,25 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ApiUtils.ApiResult handleNoSuchElement(NoSuchElementException error){
+    public ApiUtils.ApiResult handleNoSuchElementException(NoSuchElementException error){
         return ApiUtils.error(error.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ApiUtils.ApiResult handleNotDelete(NotDeleteException error){
+    public ApiUtils.ApiResult handleNotDeleteException(NotDeleteException error){
         return ApiUtils.error(error.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ApiUtils.ApiResult handleNotCreate(NotCreateException error){
+    public ApiUtils.ApiResult handleNotCreateException(NotCreateException error){
         return ApiUtils.error(error.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiUtils.ApiResult handleNotMatchMember(NotMatchMemberException error){
+    public ApiUtils.ApiResult handleNotMatchMemberException(NotMatchMemberException error){
         return ApiUtils.error(error.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
