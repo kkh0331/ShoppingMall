@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import pda.shoppingmall.exception.NotCreateException;
-import pda.shoppingmall.exception.NotMatchMemberException;
+import pda.shoppingmall.exception.PasswordNotValidException;
 import pda.shoppingmall.member.dto.JoinReqDTO;
 import pda.shoppingmall.member.dto.LoginReqDTO;
 import pda.shoppingmall.member.repository.MemberRepository;
@@ -36,19 +36,17 @@ public class MemberService {
         return existMember.isPresent();
     }
 
-    public Member login(LoginReqDTO loginReqDTO) {
-        Optional<Member> resMember = memberRepository.findByUserId(loginReqDTO.getUserId());
-        if(resMember.isEmpty()){
-            throw new NoSuchElementException("해당 아이디를 찾을 수 없습니다. 다시 입력해 주세요");
-        }
-        if(isMatchMember(resMember.get(), loginReqDTO)){
-            return resMember.get();
-        }
-        throw new NotMatchMemberException("비밀번호가 일치하지 않습니다. 다시 입력해 주세요");
+    public String login(LoginReqDTO loginReqDTO) {
+        Member loginMember = memberRepository.findByUserId(loginReqDTO.getUserId())
+            .orElseThrow(() -> new NoSuchElementException("아이디가 존재하지 않습니다."));
+        if(isRightPassword(loginReqDTO, loginMember))
+            return loginMember.getName();
+        else
+            throw new PasswordNotValidException("비밀번호가 틀렸습니다.");
     }
 
-    private boolean isMatchMember(Member resMember, LoginReqDTO loginReqDTO){
-        return loginReqDTO.getPw().equals(resMember.getPw());
+    private static boolean isRightPassword(LoginReqDTO loginReqDTO, Member loginMember) {
+        return loginMember.getName().equals(loginReqDTO.getPw());
     }
 
 }

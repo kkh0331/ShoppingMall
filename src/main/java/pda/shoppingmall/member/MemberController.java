@@ -33,6 +33,14 @@ public class MemberController {
                 .body(ApiUtils.success(userId));
     }
 
+    @PostMapping("/login")
+    public ResponseEntity login(@Valid @RequestBody LoginReqDTO loginRequest){
+        log.info("LoginRequest : {}", loginRequest);
+        String loginMemberName = memberService.login(loginRequest);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiUtils.success(loginMemberName));
+    }
+
     // 아이디 중복 확인 -> 메시지
     @PostMapping("/check/userId")
     public ResponseEntity checkUsableUserId(@RequestBody String userId){
@@ -45,14 +53,6 @@ public class MemberController {
 
     private boolean isDuplicateId(String userId) {
         return memberService.checkDuplicateId(userId);
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity login(@Valid @RequestBody LoginReqDTO loginRequest){
-        log.info("LoginRequest : {}", loginRequest);
-        Member member = memberService.login(loginRequest);
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(ApiUtils.success(member));
     }
 
 }

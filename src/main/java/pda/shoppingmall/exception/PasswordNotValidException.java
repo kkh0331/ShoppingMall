@@ -1,10 +1,10 @@
 package pda.shoppingmall.exception;
 
-public class NotMatchMemberException extends RuntimeException{
+public class PasswordNotValidException extends RuntimeException{
 
     private String message;
 
-    public NotMatchMemberException(String message){
+    public PasswordNotValidException(String message){
         this.message = message;
     }
 

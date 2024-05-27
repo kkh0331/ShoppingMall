@@ -67,7 +67,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiUtils.ApiResult handleNotMatchMemberException(NotMatchMemberException error){
+    public ApiUtils.ApiResult handlePasswordNotValidException(PasswordNotValidException error){
         return ApiUtils.error(error.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
