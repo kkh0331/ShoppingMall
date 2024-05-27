@@ -41,7 +41,7 @@ public class ProductController {
     public ResponseEntity findProduct(@PathVariable(value = "id") Long id){
         log.info("id : {}",id);
         Product resultProduct = productService.findProduct(id);
-        return new ResponseEntity<>(ApiUtils.success(resultProduct), HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(ApiUtils.success(resultProduct));
     }
 
     @GetMapping("")
@@ -56,7 +56,7 @@ public class ProductController {
 
         FindProductsResDTO findProductsResDTO = productService.findProducts(findProductsReqDTO);
 
-        return new ResponseEntity<>(ApiUtils.success(findProductsResDTO), HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(ApiUtils.success(findProductsResDTO));
     }
 
     @DeleteMapping("/{id}")
